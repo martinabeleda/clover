@@ -19,4 +19,4 @@ COPY . .
 RUN poetry build \
  && pip install dist/*.whl
 
-CMD ["transactions", "--help"]
+CMD ["transactions"]

@@ -1,10 +1,16 @@
-import click
+from pathlib import Path
 
-from . import __version__
+import markdown
+from flask import Flask
 
+app = Flask(__name__)
 
-@click.command()
-@click.version_option(version=__version__)
+@app.route("/")
+def index():
+    path = Path('/app/README.md')
+    with path.open('r') as markdown_file:
+        content = markdown_file.read()
+        return markdown.markdown(content)
+
 def main():
-    """An app to store and serve my personal transactions."""
-    click.echo("Hello, world!")
+    app.run(host='0.0.0.0', port=80, debug=True)
