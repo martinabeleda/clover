@@ -2,8 +2,7 @@
 
 An app to store and serve my personal transactions
 
-
-## API
+## API reference
 
 ### List transaction categories
 
@@ -19,7 +18,34 @@ An app to store and serve my personal transactions
 [
     {
         "name": "Restaurants & Cafes",
-        "type": "",
+        "type": "Good Life"
+    },
+    {
+        "name": "Internet",
+        "type": "Home"
     }
 ]
+```
+
+### Get transactions
+
+**Definition**
+
+`GET /transactions`
+
+**Response**
+
+- `200 OK` on success
+
+```json
+[
+    {},
+    {}
+]
+```
+
+- `204 No Content` no data to retrieve
+
+```json
+{}
 ```
