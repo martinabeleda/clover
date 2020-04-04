@@ -1,3 +1,39 @@
 {
-    "python.pythonPath": "/Users/martin.abeleda/.pyenv/versions/3.8.2/bin/python3.8"
+    "python.pythonPath": "/Users/martin.abeleda/Library/Caches/pypoetry/virtualenvs/transactions-cDn2h68b-py3.8",
+    "editor.rulers": [
+        120
+    ],
+    "git.autofetch": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--rcfile=.pylintrc"
+    ],
+    "python.linting.flake8Enabled": false,
+    "python.linting.mypyEnabled": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "[python]": {
+        "editor.formatOnPaste": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "120"
+    ],
+    "python.sortImports.args": [
+        "--multi-line=3",
+        "--trailing-comma",
+        "--force-grid-wrap=0",
+        "--use-parentheses",
+        "--line-width=120",
+        "--section-default=THIRDPARTY",
+        "--project=pycanary",
+        "--force-sort-within-sections"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": false
 }
