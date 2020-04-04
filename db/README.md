@@ -39,5 +39,5 @@ docker cp data/2019-12.csv transactions-postgres:/tmp
 ```
 
 ```bash
-COPY transactions FROM '/tmp/2019-12.csv' DELIMITER ',' CSV HEADER;
+COPY transactions FROM '/tmp/data/2019-12.csv' DELIMITER ',' CSV HEADER;
 ```
