@@ -7,3 +7,9 @@ services:
       - .:/app
     ports:
       - 5000:80
+  db:
+    build: db/
+    volumes:
+      - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
