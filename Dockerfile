@@ -11,12 +11,12 @@ ENV PATH="${PATH}:/root/.poetry/bin"
 
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry config virtualenvs.create false \
- && poetry install --no-dev --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-dev --no-interaction --no-ansi
 
 COPY . .
 
-RUN poetry build \
- && pip install dist/*.whl
+RUN poetry build && \
+    pip install dist/*.whl
 
 CMD ["transactions"]
