@@ -23,6 +23,7 @@ pytest-cov = "^2.8.1"
 black = "^19.10b0"
 pylint = "^2.4.4"
 mypy = "^0.770"
+pre-commit = "^2.2.0"
 
 [tool.poetry.scripts]
 transactions = "transactions.app:main"
