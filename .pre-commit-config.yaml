@@ -8,23 +8,30 @@ repos:
   - repo: local
     hooks:
       - id: black
-        name: black
+        name: Checking Formatting
         entry: poetry run black --line-length 120 --check
         language: system
         types: [python]
   - repo: local
     hooks:
       - id: pylint
-        name: pylint
+        name: Code Quality
         entry: poetry run pylint --rcfile .pylintrc transactions
         language: system
         types: [python]
   - repo: local
     hooks:
       - id: mypy
-        name: mypy
+        name: Running Type Checks
         files: ^transactions/
         entry: poetry run mypy transactions/
         pass_filenames: false
+        language: system
+        types: [python]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Running Tests
+        entry: poetry run pytest --cov='.'
         language: system
         types: [python]
