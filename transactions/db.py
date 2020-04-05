@@ -1,12 +1,26 @@
 from contextlib import contextmanager
 import dataclasses
 import logging
-from typing import List
+from typing import List, Optional
 
+from flask import g
 import pandas as pd
 import psycopg2
 
 LOGGER = logging.getLogger(__name__)
+
+
+def get_db():
+    if "db" not in g:
+        db = TransactionsDB(host="db", user="postgres", password="postgres", database="postgres")
+        g.db = db.get_connection()
+    return g.db
+
+
+def close_db(exception: Optional[Exception]):
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
 
 
 @dataclasses.dataclass(frozen=True)

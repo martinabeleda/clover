@@ -1,10 +1,9 @@
 from typing import Tuple
 
-from flask import g
 from flask_restful import Resource, fields, marshal_with
 import pandas as pd
 
-from .db import TransactionsDB
+from .db import get_db
 
 categories_fields = {"data": fields.Nested({"name": fields.String, "type": fields.String})}
 
@@ -31,13 +30,6 @@ transactions_fields = {
         }
     )
 }
-
-
-def get_db():
-    if "db" not in g:
-        db = TransactionsDB(host="db", user="postgres", password="postgres", database="postgres")
-        g.db = db.get_connection()
-    return g.db
 
 
 class Categories(Resource):
