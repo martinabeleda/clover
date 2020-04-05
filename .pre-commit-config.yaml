@@ -9,6 +9,22 @@ repos:
     hooks:
       - id: black
         name: black
-        entry: poetry run black --line-length 120 --verbose --check
+        entry: poetry run black --line-length 120 --check
+        language: system
+        types: [python]
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: poetry run pylint --rcfile .pylintrc transactions
+        language: system
+        types: [python]
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        files: ^transactions/
+        entry: poetry run mypy transactions/
+        pass_filenames: false
         language: system
         types: [python]
