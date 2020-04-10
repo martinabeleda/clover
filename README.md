@@ -1,5 +1,7 @@
 # Clover
 
+![Tests](https://github.com/martinabeleda/clover/workflows/Tests/badge.svg)
+
 An app to store and serve my personal transactions
 
 ## API reference

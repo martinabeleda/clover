@@ -27,6 +27,7 @@ black = "^19.10b0"
 pylint = "^2.4.4"
 pre-commit = "^2.2.0"
 flask-testing = "^0.8.0"
+codecov = "^2.0.22"
 
 [build-system]
 requires = ["poetry>=1.0"]
