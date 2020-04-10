@@ -18,3 +18,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry==1.0.5
         poetry install --no-interaction --no-ansi
+    - name: Check formatting
+      run: poetry run black --line-length 120 --check
+    - name: Code Quality
+      run: poetry run pylint --rcfile .pylintrc clover tests
