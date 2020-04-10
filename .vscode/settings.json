@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/martin.abeleda/Library/Caches/pypoetry/virtualenvs/transactions-cDn2h68b-py3.8",
+    "python.pythonPath": "/Users/martin.abeleda/Library/Caches/pypoetry/virtualenvs/transactions-cDn2h68b-py3.8/bin/python",
     "editor.rulers": [
         120
     ],
@@ -9,7 +9,7 @@
         "--rcfile=.pylintrc"
     ],
     "python.linting.flake8Enabled": false,
-    "python.linting.mypyEnabled": true,
+    "python.linting.mypyEnabled": false,
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false,
     "[python]": {

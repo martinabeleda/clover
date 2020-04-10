@@ -21,17 +21,8 @@ repos:
         types: [python]
   - repo: local
     hooks:
-      - id: mypy
-        name: Running Type Checks
-        files: ^transactions/
-        entry: poetry run mypy transactions/
-        pass_filenames: false
-        language: system
-        types: [python]
-  - repo: local
-    hooks:
       - id: pytest
         name: Running Tests
-        entry: poetry run pytest --cov='.'
+        entry: poetry run pytest
         language: system
         types: [python]
