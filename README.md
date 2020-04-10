@@ -1,6 +1,7 @@
 # Clover
 
 ![Tests](https://github.com/martinabeleda/clover/workflows/Tests/badge.svg)
+[![codecov](https://codecov.io/gh/martinabeleda/clover/branch/master/graph/badge.svg?token=DX06DKY74P)](https://codecov.io/gh/martinabeleda/clover)
 
 An app to store and serve my personal transactions
 
