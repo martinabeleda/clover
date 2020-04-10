@@ -1,12 +1,8 @@
-name: Build and Test
-
+name: Tests
 on: push
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
@@ -23,4 +19,4 @@ jobs:
     - name: Code Quality
       run: poetry run pylint --rcfile .pylintrc clover tests
     - name: Run tests
-      run: poetry run pytest
+      run: poetry run pytest -s .
