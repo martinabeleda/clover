@@ -1,22 +1,15 @@
 # https://stackoverflow.com/questions/53835198/integrating-python-poetry-with-docker
-FROM python:3.8.2
-
-SHELL ["/bin/bash", "-c"]
+FROM python:3.8.2-slim-buster as build
 
 WORKDIR /app
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-
-ENV PATH="${PATH}:/root/.poetry/bin"
+RUN pip install poetry==1.0.5
 
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry config virtualenvs.create false && \
-    poetry install --no-dev --no-interaction --no-ansi
+    poetry install --no-interaction --no-root --no-dev
 
 COPY . .
 
-RUN poetry build && \
-    pip install dist/*.whl
-
-CMD ["clover"]
+CMD ["python", "app.py"]

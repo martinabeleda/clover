@@ -11,7 +11,7 @@ def main():
     db.create_all()
     api.add_resource(Categories, "/categories")
     api.add_resource(Transactions, "/transactions")
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
 
 
 if __name__ == "__main__":
