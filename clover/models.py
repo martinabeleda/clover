@@ -1,4 +1,4 @@
-from transactions import db
+from clover import db
 
 
 class Category(db.Model):

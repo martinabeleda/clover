@@ -1,8 +1,8 @@
 from flask_restx import Resource
 from sqlalchemy.exc import IntegrityError
-from transactions import api, db
-from transactions.models import Category, Transaction
-from transactions.schema import CategorySchema, TransactionSchema
+from clover import api, db
+from clover.models import Category, Transaction
+from clover.schema import CategorySchema, TransactionSchema
 
 
 class Categories(Resource):

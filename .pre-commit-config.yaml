@@ -16,7 +16,7 @@ repos:
     hooks:
       - id: pylint
         name: Code Quality
-        entry: poetry run pylint --rcfile .pylintrc transactions
+        entry: poetry run pylint --rcfile .pylintrc clover
         language: system
         types: [python]
   - repo: local

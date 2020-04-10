@@ -1,6 +1,6 @@
 from flask_testing import TestCase
-from transactions import api, create_app, db
-from transactions.resources import Categories, Transactions
+from clover import api, create_app, db
+from clover.resources import Categories, Transactions
 
 
 class TestEndpoints(TestCase):

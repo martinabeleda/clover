@@ -1,6 +1,6 @@
 from marshmallow import post_load
-from transactions import ma
-from transactions.models import Category, Transaction
+from clover import ma
+from clover.models import Category, Transaction
 
 
 class CategorySchema(ma.SQLAlchemyAutoSchema):

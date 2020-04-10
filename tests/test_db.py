@@ -2,8 +2,8 @@ from datetime import datetime
 
 from flask_testing import TestCase
 from sqlalchemy.exc import IntegrityError
-from transactions import create_app, db
-from transactions.models import Category, Transaction
+from clover import create_app, db
+from clover.models import Category, Transaction
 
 
 class TestTransactionsDB(TestCase):
