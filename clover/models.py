@@ -1,17 +1,17 @@
 from clover import db
 
 
-class Category(db.Model):
+class CategoryModel(db.Model):
     __tablename__ = "categories"
     name = db.Column(db.String, primary_key=True, nullable=False)
     display_name = db.Column(db.String, unique=True, nullable=False)
-    transactions = db.relationship("Transaction", backref="category", lazy=True)
+    transactions = db.relationship("TransactionModel", backref="category", lazy=True)
 
     def __repr__(self):
-        return f"Category(name={self.name}, display_name={self.display_name})"
+        return f"CategoryModel(name={self.name}, display_name={self.display_name})"
 
 
-class Transaction(db.Model):
+class TransactionModel(db.Model):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)

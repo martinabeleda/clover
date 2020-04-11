@@ -1,22 +1,22 @@
 from marshmallow import post_load
 from clover import ma
-from clover.models import Category, Transaction
+from clover.models import CategoryModel, TransactionModel
 
 
 class CategorySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Category
+        model = CategoryModel
 
     @post_load
     def make_category(self, data, **kwargs):
-        return Category(**data)
+        return CategoryModel(**data)
 
 
 class TransactionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Transaction
+        model = TransactionModel
         include_fk = True
 
     @post_load
     def make_transaction(self, data, **kwargs):
-        return Transaction(**data)
+        return TransactionModel(**data)

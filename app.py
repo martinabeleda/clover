@@ -1,5 +1,5 @@
 from clover import api, create_app, db
-from clover.resources import Categories, Transactions
+from clover.resources import Categories, Category, Transaction, Transactions
 from retrying import retry
 
 
@@ -15,7 +15,9 @@ def main():
     }
     app = create_app(config)
     create_tables()
+    api.add_resource(Category, "/category")
     api.add_resource(Categories, "/categories")
+    api.add_resource(Transaction, "/transaction")
     api.add_resource(Transactions, "/transactions")
     app.run(host="0.0.0.0", debug=True)
 
