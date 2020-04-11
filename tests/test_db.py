@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from flask_testing import TestCase
-from sqlalchemy.exc import IntegrityError
 from clover import create_app, db
 from clover.models import Category, Transaction
+from flask_testing import TestCase
+from sqlalchemy.exc import IntegrityError
 
 
 class TestTransactionsDB(TestCase):
@@ -18,6 +18,7 @@ class TestTransactionsDB(TestCase):
 
     def setUp(self):
         """Create a SQLite db from scratch"""
+        db.drop_all()
         db.create_all()
 
         # Ensure we're not pulling in state from a previous session
