@@ -19,7 +19,12 @@ jobs:
       - name: Code Quality
         run: poetry run pylint --rcfile .pylintrc clover tests
       - name: Run tests and generate coverage report
-        run: poetry run pytest -s --cov=./ --cov-report=xml .
+        run: poetry run pytest -s --junitxml=./test-report.xml --cov=./ --cov-report=xml .
+      - uses: actions/upload-artifact@v1
+        # if: failure()
+        with:
+          name: test-report
+          path: ./test-report.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
