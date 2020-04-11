@@ -7,6 +7,9 @@ class Category(db.Model):
     display_name = db.Column(db.String, unique=True, nullable=False)
     transactions = db.relationship("Transaction", backref="category", lazy=True)
 
+    def __repr__(self):
+        return f"Category(name={self.name}, display_name={self.display_name})"
+
 
 class Transaction(db.Model):
     __tablename__ = "transactions"
@@ -24,6 +27,6 @@ class Transaction(db.Model):
             f"id={self.id}, "
             f"transaction_type={self.transaction_type}, "
             f"payee={self.payee}, "
-            f"category={self.category}, "
+            f"category_name={self.category_name}, "
             f"total={self.total})"
         )
