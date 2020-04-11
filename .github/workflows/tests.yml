@@ -38,3 +38,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build docker image
+        run: docker build -t martinabeleda/clover .
+      - name: Push image to Docker Hub
+        run: docker push martinabeleda/clover
