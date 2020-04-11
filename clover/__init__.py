@@ -3,6 +3,8 @@ from flask_marshmallow import Marshmallow
 from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import post_load
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError
 
 __version__ = "0.1.0"
@@ -32,3 +34,10 @@ def create_app(config: dict) -> Flask:
     ma.init_app(app)
     app.app_context().push()
     return app
+
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
