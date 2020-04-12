@@ -1,16 +1,11 @@
-from clover import api, create_app, db
+from clover import create_app, db
 from clover.models import CategoryModel, TransactionModel
-from clover.resources import Categories, Category, Transaction, Transactions
 from flask_testing import TestCase
 
 
 class TestEndpoints(TestCase):
     def create_app(self):
         """Create a SQLite db from scratch"""
-        api.add_resource(Category, "/categories/<name>")
-        api.add_resource(Categories, "/categories")
-        api.add_resource(Transaction, "/transactions/<transaction_id>")
-        api.add_resource(Transactions, "/transactions")
         config = {
             "SQLALCHEMY_DATABASE_URI": "sqlite://",
             "SQLALCHEMY_TRACK_MODIFICATIONS": False,

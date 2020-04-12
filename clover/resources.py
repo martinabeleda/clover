@@ -82,3 +82,9 @@ class Transaction(Resource):
         if not transaction:
             return {"msg": f"Transaction not found with id: {transaction_id}"}, 404
         return _transaction_schema.dump(transaction)
+
+
+api.add_resource(Category, "/categories/<name>")
+api.add_resource(Categories, "/categories")
+api.add_resource(Transaction, "/transactions/<transaction_id>")
+api.add_resource(Transactions, "/transactions")
