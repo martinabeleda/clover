@@ -1,13 +1,15 @@
 from clover import api, create_app, db
-from clover.models import Category, Transaction
-from clover.resources import Categories, Transactions
+from clover.models import CategoryModel, TransactionModel
+from clover.resources import Categories, Category, Transaction, Transactions
 from flask_testing import TestCase
 
 
 class TestEndpoints(TestCase):
     def create_app(self):
         """Create a SQLite db from scratch"""
+        api.add_resource(Category, "/categories/<name>")
         api.add_resource(Categories, "/categories")
+        api.add_resource(Transaction, "/transactions/<transaction_id>")
         api.add_resource(Transactions, "/transactions")
         config = {
             "SQLALCHEMY_DATABASE_URI": "sqlite://",
@@ -21,8 +23,8 @@ class TestEndpoints(TestCase):
         db.drop_all()
         db.create_all()
 
-        self.assertFalse(Category.query.all())
-        self.assertFalse(Transaction.query.all())
+        self.assertFalse(CategoryModel.query.all())
+        self.assertFalse(TransactionModel.query.all())
 
     def tearDown(self):
         """Clear the db"""
@@ -37,11 +39,27 @@ class TestEndpoints(TestCase):
         response = self.client.get("/categories")
         self.assertEqual(response.status_code, 200)
 
-    def test_post_categories(self):
+    def test_get_nonextant_category(self):
+        response = self.client.get("/categories/groceries")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Category not found.", response.json["msg"])
+
+    def test_post_category(self):
         data = {"name": "groceries", "display_name": "Groceries"}
         response = self.client.post("/categories", json=data)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json, data)
+
+    def test_post_and_get_category(self):
+        data = {"name": "groceries", "display_name": "Groceries"}
+        response = self.client.post("/categories", json=data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json, data)
+
+        expected_response = {"category": data, "transactions": []}
+        response = self.client.get("/categories/groceries")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, expected_response)
 
     def test_post_category_with_duplicate_name(self):
         data_1 = {"name": "investments", "display_name": "Foo"}
@@ -71,27 +89,34 @@ class TestEndpoints(TestCase):
         response = self.client.get("/transactions")
         self.assertEqual(response.status_code, 200)
 
-    def test_post_transaction(self):
+    def test_post_transaction_with_category(self):
 
         # First, create a category
-        data = {"name": "groceries", "display_name": "Groceries"}
-        response = self.client.post("/categories", json=data)
+        category_data = {"name": "groceries", "display_name": "Groceries"}
+        response = self.client.post("/categories", json=category_data)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json, data)
+        self.assertEqual(response.json, category_data)
 
         # Now assign a transaction to that category
-        data = {
+        transaction_data = {
             "transaction_type": "Purchase",
             "payee": "Woolworths",
             "total": 100.0,
             "category_name": "groceries",
-            "id": 2,
             "description": "Woolworths Crows Nest",
             "time": "2020-03-31T12:58:34",
         }
-        response = self.client.post("/transactions", json=data)
+        response = self.client.post("/transactions", json=transaction_data)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json, data)
+        response.json.pop("id")
+        self.assertEqual(response.json, transaction_data)
+
+        # Now, check that we can get it by category
+        response = self.client.get("/categories/groceries")
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json["category"], category_data)
+        response.json["transactions"][0].pop("id")
+        self.assertDictEqual(response.json["transactions"][0], transaction_data)
 
     def test_post_transaction_with_nonextant_category(self):
         data = {
@@ -99,11 +124,69 @@ class TestEndpoints(TestCase):
             "payee": "Woolworths",
             "total": 100.0,
             "category_name": "groceries",
-            "id": 2,
             "description": "Woolworths Crows Nest",
             "time": "2020-03-31T12:58:34",
         }
         response = self.client.post("/transactions", json=data)
         self.assertEqual(response.status_code, 400)
         self.assertIn("Tried to create a transaction with nonextant category", response.json["msg"])
+        response.json["data"].pop("id")
         self.assertEqual(response.json["data"], data)
+
+    def test_update_category_display_name(self):
+        # Create a category `foo`
+        data_1 = {"name": "foo", "display_name": "Foo"}
+        response = self.client.post("/categories", json=data_1)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json, data_1)
+
+        # Update the display name
+        data_2 = {"name": "foo", "display_name": "Bar"}
+        response = self.client.put("/categories/foo", json=data_2)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, data_2)
+
+        # Check that the category has been updated
+        response = self.client.get("/categories/foo")
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json["category"], data_2)
+
+    def test_update_nonextant_category_display_name(self):
+        # Create a category `foo`
+        data = {"name": "foo", "display_name": "Foo"}
+        response = self.client.put("/categories/foo", json=data)
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Category not found", response.json["msg"])
+
+    def test_get_transaction_by_id(self):
+        # Create a category
+        category_data = {"name": "groceries", "display_name": "Groceries"}
+        response = self.client.post("/categories", json=category_data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json, category_data)
+
+        # Now assign a transaction to that category
+        transaction_data = {
+            "transaction_type": "Purchase",
+            "payee": "Woolworths",
+            "total": 100.0,
+            "category_name": "groceries",
+            "description": "Woolworths Crows Nest",
+            "time": "2020-03-31T12:58:34",
+        }
+        response = self.client.post("/transactions", json=transaction_data)
+        self.assertEqual(response.status_code, 201)
+        transaction_id = response.json.pop("id")
+        self.assertEqual(response.json, transaction_data)
+
+        # Now, check that we can get it by id
+        response = self.client.get(f"/transactions/{transaction_id}")
+        self.assertEqual(response.status_code, 200)
+        transaction_data.update(dict(id=transaction_id))
+        self.assertEqual(response.json, transaction_data)
+
+    def test_nonextant_transaction(self):
+        # The database should be empty
+        response = self.client.get(f"/transactions/1")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Transaction not found with id: 1", response.json["msg"])
