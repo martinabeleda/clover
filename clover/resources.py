@@ -84,7 +84,8 @@ class Transaction(Resource):
         return _transaction_schema.dump(transaction)
 
 
-api.add_resource(Category, "/categories/<name>")
-api.add_resource(Categories, "/categories")
-api.add_resource(Transaction, "/transactions/<transaction_id>")
-api.add_resource(Transactions, "/transactions")
+def init_resources():
+    api.add_resource(Category, "/categories/<name>")
+    api.add_resource(Categories, "/categories")
+    api.add_resource(Transaction, "/transactions/<transaction_id>")
+    api.add_resource(Transactions, "/transactions")

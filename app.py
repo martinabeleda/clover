@@ -1,4 +1,5 @@
 from clover import create_app, db
+from clover.resources import init_resources
 from retrying import retry
 
 
@@ -13,6 +14,7 @@ def main():
     }
     app = create_app(config)
     create_tables()
+    init_resources()
     app.run(host="0.0.0.0", debug=True)
 
 
