@@ -78,8 +78,7 @@ class Transactions(Resource):
 class Transaction(Resource):
     def get(self, transaction_id: int):
         """Get a transaction by ID"""
-        try:
-            transaction = TransactionModel.query.get(transaction_id)
-        except IntegrityError:
+        transaction = TransactionModel.query.get(transaction_id)
+        if not transaction:
             return {"msg": f"Transaction not found with id: {transaction_id}"}, 404
         return _transaction_schema.dump(transaction)
