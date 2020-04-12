@@ -45,7 +45,7 @@ class Category(Resource):
         """Update an existing category"""
         existing_category = CategoryModel.query.get(name)
         if not existing_category:
-            return {"msg": "Catgeory not found"}, 404
+            return {"msg": "Category not found."}, 404
         else:
             new_category = _category_schema.load(api.payload)
             existing_category.display_name = new_category.display_name
