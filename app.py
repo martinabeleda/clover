@@ -15,9 +15,9 @@ def main():
     }
     app = create_app(config)
     create_tables()
-    api.add_resource(Category, "/category")
+    api.add_resource(Category, "/categories/<name>")
     api.add_resource(Categories, "/categories")
-    api.add_resource(Transaction, "/transaction")
+    api.add_resource(Transaction, "/transactions/<transaction_id>")
     api.add_resource(Transactions, "/transactions")
     app.run(host="0.0.0.0", debug=True)
 

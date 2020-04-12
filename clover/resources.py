@@ -16,18 +16,6 @@ class Categories(Resource):
         categories = CategoryModel.query.all()
         return _categories_schema.dump(categories)
 
-
-class Category(Resource):
-    def get(self, name: str):
-        """Get a transaction category by name"""
-        try:
-            category = CategoryModel.query.get(name)
-        except IntegrityError:
-            return {"msg": "Category not found."}, 404
-        category_result = _category_schema.dump(category)
-        transactions_result = _transactions_schema.dump(category.transactions.all())
-        return {"category": category_result, "transactions": transactions_result}
-
     def post(self):
         """Create a new transaction category"""
         new_category = _category_schema.load(api.payload)
@@ -42,6 +30,17 @@ class Category(Resource):
             return {"msg": "Category already exists", "data": _category_schema.dump(existing_category)}, 409
         return _category_schema.dump(new_category), 201
 
+
+class Category(Resource):
+    def get(self, name: str):
+        """Get a transaction category by name"""
+        category = CategoryModel.query.get(name)
+        if not category:
+            return {"msg": "Category not found."}, 404
+        category_result = _category_schema.dump(category)
+        transactions_result = _transactions_schema.dump(category.transactions)
+        return {"category": category_result, "transactions": transactions_result}
+
     def put(self, name: str):
         """Update an existing category"""
         existing_category = CategoryModel.query.get(name)
@@ -49,6 +48,8 @@ class Category(Resource):
             return {"msg": "Catgeory not found"}, 404
         else:
             new_category = _category_schema.load(api.payload)
+            existing_category.display_name = new_category.display_name
+            db.session.commit()
             return _category_schema.dump(new_category)
 
 
@@ -57,16 +58,6 @@ class Transactions(Resource):
         """Get all transactions"""
         transactions = TransactionModel.query.all()
         return _transactions_schema.dump(transactions)
-
-
-class Transaction(Resource):
-    def get(self, transaction_id: int):
-        """Get a transaction by ID"""
-        try:
-            transaction = TransactionModel.query.get(transaction_id)
-        except IntegrityError:
-            return {"msg": f"Transaction not found with id: {transaction_id}"}, 404
-        return _transaction_schema.dump(transaction)
 
     def post(self):
         """Create a new transaction"""
@@ -82,3 +73,13 @@ class Transaction(Resource):
             }
             return result, 400
         return _transaction_schema.dump(new_transaction), 201
+
+
+class Transaction(Resource):
+    def get(self, transaction_id: int):
+        """Get a transaction by ID"""
+        try:
+            transaction = TransactionModel.query.get(transaction_id)
+        except IntegrityError:
+            return {"msg": f"Transaction not found with id: {transaction_id}"}, 404
+        return _transaction_schema.dump(transaction)
