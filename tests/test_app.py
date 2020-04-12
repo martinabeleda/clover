@@ -188,6 +188,5 @@ class TestEndpoints(TestCase):
     def test_nonextant_transaction(self):
         # The database should be empty
         response = self.client.get(f"/transactions/1")
-        print(response.json)
         self.assertEqual(response.status_code, 404)
         self.assertIn("Transaction not found with id: 1", response.json["msg"])
